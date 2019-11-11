@@ -8,6 +8,22 @@ from visual_regression import VisualRegression
 app = Flask(__name__)
 
 
+@app.route('/', methods=['GET'])
+def home():
+    message = '''
+        To use this service you should send a POST request to "/" endpoint.
+        The request body must contains a form-data with two files where the key names
+        are "baseline" and "test" respectively. These two files can be .jpg or .png images and
+        need to have equals dimensions (height x width).
+
+        If exists some visual regression between two files, the response will contains a key named
+        "file_url" with a link to the file on an AWS S3 bucket.
+    '''
+    resp = jsonify({'message': message})
+    resp.status_code = 200
+    return resp
+
+
 @app.route('/', methods=['POST'])
 def test_regression():
     if 'baseline' not in request.files or 'test' not in request.files:

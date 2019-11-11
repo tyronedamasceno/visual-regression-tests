@@ -39,7 +39,8 @@ class VisualRegression:
         if has_regression:
             filename = f'result_{uuid.uuid4().hex}.png'
             test.save(filename)
-            result_path = os.path.join(os.getcwd(), filename)
+            # result_path = os.path.join(os.getcwd(), filename)
+            result_path = filename
             print('Visual regressions were found')
             print(f'Check result at {result_path}')
         else:

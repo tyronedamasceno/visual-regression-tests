@@ -2,6 +2,7 @@ import os
 
 from flask import Flask, request, jsonify
 
+from aws_handler import upload_file
 from visual_regression import VisualRegression
 
 app = Flask(__name__)
@@ -25,9 +26,10 @@ def test_regression():
         resp.status_code = 200
         return resp
     
+    file_url = upload_file(result_file)
     resp = jsonify({
         'message': 'Visual regression found',
-        'file_path': result_file
+        'file_url': file_url
     })
     resp.status_code = 200
     return resp

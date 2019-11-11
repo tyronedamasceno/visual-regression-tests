@@ -11,15 +11,17 @@ app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def home():
     message = '''
-        <p>To use this service you should send a POST request to "/" endpoint.
+        To use this service you should send a POST request to "/" endpoint.
         The request body must contains a form-data with two files where the key names
         are "baseline" and "test" respectively. These two files can be .jpg or .png images and
-        need to have equals dimensions (height x width).</p>
+        need to have equals dimensions (height x width).
 
-        <p>If exists some visual regression between two files, the response will contains a key named
-        "file_url" with a link to the file on an AWS S3 bucket.</p>
+        If exists some visual regression between two files, the response will contains a key named
+        "file_url" with a link to the file on an AWS S3 bucket.
     '''
-    return message 
+    resp = jsonify({'message': message})
+    resp.status_code = 200
+    return resp
 
 
 @app.route('/', methods=['POST'])

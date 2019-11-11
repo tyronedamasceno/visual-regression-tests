@@ -18,6 +18,9 @@ class VisualRegression:
         if baseline.size != test.size:
             raise RuntimeError('The screenshots must have the same size')
 
+        baseline_vec = baseline.getdata()
+        test_vec = test.getdata()
+
         screen_width, screen_height = baseline.size
 
         block_width = ((screen_width - 1) // columns) + 1
@@ -26,8 +29,8 @@ class VisualRegression:
         has_regression = False
         for y in range(0, screen_height, block_height+1):
             for x in range(0, screen_width, block_width+1):
-                region_baseline= self.process_region(baseline, x, y, block_width, block_height)
-                region_test = self.process_region(test, x, y, block_width, block_height)
+                region_baseline= self.process_region(baseline_vec, x, y, block_width, block_height, screen_width)
+                region_test = self.process_region(test_vec, x, y, block_width, block_height, screen_width)
 
                 if region_baseline and region_test and region_baseline != region_test:
                     has_regression = True
@@ -48,7 +51,7 @@ class VisualRegression:
 
         return has_regression, result_path 
 
-    def process_region(self, image, x, y, width, height):
+    def process_region(self, image_vec, x, y, width, height, scr_width):
         region_total = 0
 
         # This can be used as the sensitivity factor, the larger it is the less sensitive the comparison
@@ -57,7 +60,7 @@ class VisualRegression:
         for coordinateY in range(y, y+height):
             for coordinateX in range(x, x+width):
                 try:
-                    pixel = image.getpixel((coordinateX, coordinateY))
+                    pixel = image_vec[coordinateY*scr_width + coordinateX]
                     region_total += sum(pixel)/4
                 except:
                     return

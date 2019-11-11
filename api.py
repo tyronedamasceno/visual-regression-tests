@@ -19,9 +19,7 @@ def home():
         If exists some visual regression between two files, the response will contains a key named
         "file_url" with a link to the file on an AWS S3 bucket.
     '''
-    resp = jsonify({'message': message})
-    resp.status_code = 200
-    return resp
+    return message 
 
 
 @app.route('/', methods=['POST'])
